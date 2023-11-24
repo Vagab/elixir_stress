@@ -47,7 +47,7 @@ defmodule Stress do
   Takes an optional :requests keyword, which is the number of requests to make per genserver. Defaults to 10.
   I.e. if :max_concurrency was set to 20, and :requests was set to 10, then 20 * 10 requests would be made.
   """
-  @spec request(String.t(), Keyword.t()) :: [pid()]
+  @spec request(String.t(), Keyword.t()) :: :ok
   def request(url, options \\ []) do
     default = [requests: 10]
     options = Keyword.merge(default, options)
@@ -61,5 +61,7 @@ defmodule Stress do
       |> StressReq.ready(%{requests: options[:requests], url: url})
       |> StressReq.request()
     end)
+
+    :ok
   end
 end
