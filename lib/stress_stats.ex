@@ -20,8 +20,6 @@ defmodule StressStats do
 
   @impl true
   def handle_cast({:request, %{result: result, time: time}}, state) do
-    IO.puts("Status code: #{result.status}, time: #{time}")
-
     state =
       case result.status do
         200 -> %{state | ok: state.ok + 1, time_ok: state.time_ok + time}

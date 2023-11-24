@@ -7,9 +7,9 @@ defmodule StressReq do
     pid
   end
 
-  def restart(pid, %{requests: requests, url: url}) do
+  def ready(pid, %{requests: requests, url: url}) do
     # Process.send_after(pid, {:restart, %{requests: requests, url: url}}, 0)
-    GenServer.call(pid, {:restart, %{requests: requests, url: url}})
+    GenServer.call(pid, {:ready, %{requests: requests, url: url}})
 
     pid
   end
@@ -17,7 +17,7 @@ defmodule StressReq do
   def start_link(_) do
     GenServer.start_link(
       __MODULE__,
-      %{current_requests: 0, requests: 0, url: ""}
+      %{current_requests: 0}
     )
   end
 
@@ -44,7 +44,10 @@ defmodule StressReq do
   end
 
   @impl true
-  def handle_call({:restart, %{requests: requests, url: url}}, _from, state) do
-    {:reply, :ok, %{state | requests: requests, url: url, current_requests: 0}}
+  def handle_call({:ready, %{requests: requests, url: url}}, _from, state) do
+    state =
+      state |> Map.put(:requests, requests) |> Map.put(:url, url) |> Map.put(:current_requests, 0)
+
+    {:reply, :ok, state}
   end
 end

@@ -56,8 +56,10 @@ defmodule Stress do
     |> Enum.filter(fn {id, _pid, _type, _} ->
       is_binary(id) && String.starts_with?(id, "gen:")
     end)
-    |> Enum.map(fn gen -> elem(gen, 1) end)
-    |> Enum.map(fn pid -> StressReq.restart(pid, %{requests: options[:requests], url: url}) end)
-    |> Enum.map(&StressReq.request(&1))
+    |> Enum.each(fn {_, pid, _, _} ->
+      pid
+      |> StressReq.ready(%{requests: options[:requests], url: url})
+      |> StressReq.request()
+    end)
   end
 end
