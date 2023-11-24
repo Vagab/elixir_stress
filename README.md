@@ -1,6 +1,18 @@
 # Stress
 
-**TODO: Add description**
+Simple usage:
+
+```bash
+iex -S mix
+```
+
+```elixir
+iex> Stress.start_link
+iex> Stress.requests("https://httpbin.org/get")
+iex> Stress.stats
+```
+
+for additional documentation, use `h Stress.start_link`, `h Stress.requests`, and `h Stress.stats`
 
 ## Installation
 
@@ -18,4 +30,3 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/stress>.
-
