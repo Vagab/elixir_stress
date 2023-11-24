@@ -8,7 +8,7 @@ iex -S mix
 
 ```elixir
 iex> Stress.start_link
-iex> Stress.requests("https://httpbin.org/get")
+iex> Stress.request("https://httpbin.org/get")
 iex> Stress.stats
 ```
 
