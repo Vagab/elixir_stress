@@ -8,7 +8,8 @@ defmodule StressReq do
   end
 
   def restart(pid, %{requests: requests, url: url}) do
-    Process.send_after(pid, {:restart, %{requests: requests, url: url}}, 0)
+    # Process.send_after(pid, {:restart, %{requests: requests, url: url}}, 0)
+    GenServer.call(pid, {:restart, %{requests: requests, url: url}})
 
     pid
   end
@@ -43,7 +44,7 @@ defmodule StressReq do
   end
 
   @impl true
-  def handle_info({:restart, %{requests: requests, url: url}}, state) do
-    {:noreply, %{state | requests: requests, url: url, current_requests: 0}}
+  def handle_call({:restart, %{requests: requests, url: url}}, _from, state) do
+    {:reply, :ok, %{state | requests: requests, url: url, current_requests: 0}}
   end
 end

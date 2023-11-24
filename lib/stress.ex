@@ -13,17 +13,13 @@ defmodule Stress do
 
     Supervisor.start_link(
       __MODULE__,
-      %{
-        max_concurrency: options[:max_concurrency]
-      },
+      %{max_concurrency: options[:max_concurrency]},
       name: __MODULE__
     )
   end
 
   @impl true
-  def init(%{
-        max_concurrency: max_concurrency
-      }) do
+  def init(%{max_concurrency: max_concurrency}) do
     children =
       for i <- 1..max_concurrency do
         id = "gen:" <> "#{i}"
@@ -48,7 +44,7 @@ defmodule Stress do
 
   @doc """
   Makes requests to the given url.
-  Takes an optional :requests keyword, which is the number of requests to make per genserver.
+  Takes an optional :requests keyword, which is the number of requests to make per genserver. Defaults to 10.
   I.e. if :max_concurrency was set to 20, and :requests was set to 10, then 20 * 10 requests would be made.
   """
   @spec request(String.t(), Keyword.t()) :: [pid()]
